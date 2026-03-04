@@ -1,0 +1,25 @@
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+venv/
+node_modules/
+*.log
+*.tmp
+
+# Temp/notebook probe artifacts
+.tmp-*/
+.tmp-*
+
+# Local output and generated content
+output/
+*.md
+*.png
+*.jpg
+*.jpeg
+*.webp
+
+# Keep key docs/scripts
+!README.md
+!双击使用说明.md
+!*.command

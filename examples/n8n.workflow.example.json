@@ -1,0 +1,58 @@
+{
+  "name": "Baoyu Content Pipeline MVP",
+  "nodes": [
+    {
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [260, 300]
+    },
+    {
+      "name": "Execute Pipeline",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [520, 300],
+      "parameters": {
+        "command": "python3 /Users/abelzhou/Desktop/Baoyu/scripts/pipeline.py run --workspace /Users/abelzhou/Desktop/Baoyu --source /Users/abelzhou/Desktop/Baoyu/examples/source.example.md --meta /Users/abelzhou/Desktop/Baoyu/examples/meta.example.json --brief /Users/abelzhou/Desktop/Baoyu/examples/brief.example.json --run-id {{$now.format('yyyyLLdd-HHmmss')}}"
+      }
+    },
+    {
+      "name": "Parse Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [780, 300],
+      "parameters": {
+        "language": "javaScript",
+        "jsCode": "const raw = $json.stdout ?? '{}';\nconst parsed = JSON.parse(raw);\nreturn [{ json: parsed }];"
+      }
+    },
+    {
+      "name": "Status OK?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1040, 300],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.status}}",
+              "operation": "equal",
+              "value2": "ok"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [[{ "node": "Execute Pipeline", "type": "main", "index": 0 }]]
+    },
+    "Execute Pipeline": {
+      "main": [[{ "node": "Parse Result", "type": "main", "index": 0 }]]
+    },
+    "Parse Result": {
+      "main": [[{ "node": "Status OK?", "type": "main", "index": 0 }]]
+    }
+  }
+}
