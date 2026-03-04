@@ -21,5 +21,6 @@ output/
 
 # Keep key docs/scripts
 !README.md
+!REPO_INDEX.md
 !双击使用说明.md
 !*.command
