@@ -24,3 +24,5 @@ output/
 !REPO_INDEX.md
 !双击使用说明.md
 !*.command
+
+!skills/**/*.md
